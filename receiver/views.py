@@ -92,6 +92,8 @@ def post(request):
             doc.save()
         
         def success_actions_and_respond(doc):
+            # new doc version to avoid document update conflicts
+            doc = XFormInstance.get(doc._id)
             feedback = successful_form_received.send_robust(sender="receiver", xform=doc)
             responses = []
             errors = []
