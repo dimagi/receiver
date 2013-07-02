@@ -17,28 +17,6 @@ from dimagi.utils.parsing import string_to_datetime
 from receiver.xml import ResponseNature
 from couchforms.signals import submission_error_received
 
-def home(request):
-    forms = get_db().view('couchforms/by_xmlns', group=True, group_level=1)
-    forms = dict([(x['key'], x['value']) for x in forms])
-    return render_to_response("receiver/home.html", {"forms": forms}, RequestContext(request))
-    
-
-def form_list(request):
-    """
-    Serve forms for ODK. 
-    """
-    # based off: https://github.com/dimagi/data-hq/blob/moz/datahq/apps/receiver/views.py
-    # TODO: serve our forms here
-    # forms = get_db().view('exports_forms/by_xmlns', startkey=[domain], endkey=[domain, {}], group=True)
-    
-    # NOTE: THIS VIEW/METHOD DOES NOTHING CURRENTLY!!
-    xml = "<forms>\n"
-    forms = []
-    for form in forms:
-        xml += '\t<form url="%(url)s">%(name)s</form>\n' % {"url": form.url, "name": form.name}
-    xml += "</forms>"
-    return HttpResponse(xml, mimetype="text/xml")
-    
 
 @csrf_exempt
 @require_POST
